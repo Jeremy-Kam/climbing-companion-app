@@ -1,40 +1,49 @@
 #include "rowdata.h"
 
-rowData::rowData()
+RowData::RowData()
 {
 
 }
 
-rowData::~rowData()
+RowData::RowData(QString description, int value, QString unit) {
+    this->setDescription(description);
+    this->setValue(value);
+    this->setUnit(unit);
+}
+
+RowData::~RowData()
 {
 
 }
 
-QString rowData::getDescription() {
+QString RowData::getDescription() {
     return description;
 }
 
 
-int rowData::getValue() {
+int RowData::getValue() {
     return value;
 }
 
 
-QString rowData::getUnit() {
+QString RowData::getUnit() {
     return unit;
 }
 
-void rowData::setDescription(QString description) {
+void RowData::setDescription(QString description) {
     this->description = description;
 }
 
-void rowData::setValue(int value) {
+void RowData::setValue(int value) {
     this->value = value;
 }
 
 
-void rowData::setUnit(QString unit) {
+void RowData::setUnit(QString unit) {
     this->unit = unit;
 }
 
-
+QString RowData::toString() {
+    QString dataStr = "[" + getDescription() + ", " + QString::number(getValue()) + ", " + getUnit() + "]";
+    return dataStr;
+}

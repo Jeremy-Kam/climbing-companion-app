@@ -17,11 +17,12 @@
 #include <QDateTime>
 #include <QMap>
 
-class rowData
+class RowData
 {
 public:
-    rowData();
-    ~rowData();
+    RowData();
+    RowData(QString description, int value, QString unit);
+    ~RowData();
 
     QString getDescription();
     int getValue();
@@ -31,13 +32,15 @@ public:
     void setValue(int value);
     void setUnit(QString unit);
 
+    QString toString();
+
 private:
     QString description;
     int value;
     QString unit;
 };
 
-inline QDataStream& operator<<( QDataStream &out, rowData& t) {
+inline QDataStream& operator<<( QDataStream &out, RowData& t) {
     out << t.getDescription();
     out << t.getValue();
     out << t.getUnit();
@@ -46,7 +49,7 @@ inline QDataStream& operator<<( QDataStream &out, rowData& t) {
 }
 
 
-inline QDataStream& operator>>( QDataStream &in, rowData& t) {
+inline QDataStream& operator>>( QDataStream &in, RowData& t) {
     QString tempDescription;
     int tempValue;
     QString tempUnit;

@@ -27,6 +27,17 @@ public:
     ClimbingApp(QWidget *parent = nullptr);
     ~ClimbingApp();
 
+    void setWorkoutList(WorkoutData workoutList);
+
+    QString toString();
+
+    void printData();
+
+private slots:
+    void on_actionSave_triggered();
+
+    void on_actionExit_triggered();
+
 private:
     Ui::ClimbingApp *ui;
 
