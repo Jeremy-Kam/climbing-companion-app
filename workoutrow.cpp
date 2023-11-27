@@ -1,19 +1,13 @@
 #include "workoutrow.h"
 
-WorkoutRow::WorkoutRow(QWidget *parent, QVBoxLayout* boxVLayout)
+WorkoutRow::WorkoutRow(QWidget *parent)
     : QWidget{parent}
 {
+    QHBoxLayout *workoutElementLayout = new QHBoxLayout(this);
+    workoutElementLayout->addWidget(new QLineEdit());
+    workoutElementLayout->addWidget(new QLineEdit());
+    workoutElementLayout->addWidget(new QLineEdit());
 
-    QVBoxLayout * layout = new QVBoxLayout;
-
-    QWidget* workoutElementWidget = new QWidget(parent);
-    boxVLayout->addWidget(workoutElementWidget);
-
-    QHBoxLayout *workoutElementLayout = new QHBoxLayout(workoutElementWidget);
-    workoutElementLayout->addWidget(new QLineEdit(workoutElementWidget));
-    workoutElementLayout->addWidget(new QLineEdit(workoutElementWidget));
-    workoutElementLayout->addWidget(new QLineEdit(workoutElementWidget));
-
-    this->setLayout(layout);
+    this->setLayout(workoutElementLayout);
 
 }

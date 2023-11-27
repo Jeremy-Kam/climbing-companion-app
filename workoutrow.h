@@ -17,7 +17,7 @@ class WorkoutRow : public QWidget
 {
     Q_OBJECT
 public:
-    explicit WorkoutRow(QWidget *parent = nullptr, QVBoxLayout* boxVLayout = nullptr);
+    explicit WorkoutRow(QWidget *parent = nullptr);
 
 signals:
 

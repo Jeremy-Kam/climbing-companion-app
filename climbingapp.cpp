@@ -152,7 +152,9 @@ void ClimbingApp::on_actionAdd_Row_triggered()
     workoutElementLayout->addWidget(new QLineEdit(workoutElementWidget));
     */
 
-    WorkoutRow* newRow = new WorkoutRow(mainBox, boxVLayout);
+    WorkoutRow* newRow = new WorkoutRow(mainBox);
+
+    boxVLayout->addWidget(newRow);
 
     listOfWorkoutRows.push_back(newRow);
 
@@ -181,3 +183,4 @@ void ClimbingApp::on_actionDelete_Row_triggered()
     qDebug() << "Delete row";
 }
 
+// cd Onedrive/Documents/Qt/Projects/ClimbingApp
