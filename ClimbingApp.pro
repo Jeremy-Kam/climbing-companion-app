@@ -12,12 +12,14 @@ SOURCES += \
     main.cpp \
     climbingapp.cpp \
     rowdata.cpp \
-    workoutdata.cpp
+    workoutdata.cpp \
+    workoutrow.cpp
 
 HEADERS += \
     climbingapp.h \
     rowdata.h \
-    workoutdata.h
+    workoutdata.h \
+    workoutrow.h
 
 FORMS += \
     climbingapp.ui

@@ -13,35 +13,6 @@ int main(int argc, char *argv[])
     QApplication a(argc, argv);
 
     /*
-
-    QMainWindow window;
-    QWidget *widget = new QWidget(&window);
-    QVBoxLayout *layout = new QVBoxLayout(widget);
-    window.setCentralWidget(widget);
-    widget->setLayout(layout);
-
-    QWidget* workoutElementWidget = new QWidget(widget);
-    QHBoxLayout *workoutElementLayout = new QHBoxLayout(workoutElementWidget);
-
-    QPlainTextEdit* description = new QPlainTextEdit(workoutElementWidget);
-    // description->setSizePolicy(QSizePolicy::)
-    description->setMinimumWidth(1000);
-    description->setMaximumWidth(1000);
-    description->setMinimumHeight(30);
-    description->setMaximumHeight(30);
-
-
-    workoutElementLayout->addWidget(description);
-    workoutElementLayout->addWidget(new QLineEdit(workoutElementWidget));
-    workoutElementLayout->addWidget(new QLineEdit(workoutElementWidget));
-
-    // QLineEdit* testLE = new QLineEdit(workoutElementWidget);
-    // testLE->setMinimumSize(*new QSize(100, 30));
-
-    window.show();
-
-    */
-
     ClimbingApp window;
     QWidget *widget = new QWidget(&window);
     QVBoxLayout *layout = new QVBoxLayout(widget);
@@ -72,9 +43,12 @@ int main(int argc, char *argv[])
     workoutElementLayout->addWidget(new QLineEdit(workoutElementWidget));
     workoutElementLayout->addWidget(new QLineEdit(workoutElementWidget));
 
+    window.show();
+
+    */
 
     ClimbingApp w;
     w.show();
-    window.show();
+
     return a.exec();
 }
