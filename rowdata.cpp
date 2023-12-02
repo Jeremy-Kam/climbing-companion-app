@@ -5,7 +5,8 @@ RowData::RowData()
 
 }
 
-RowData::RowData(QString description, int value, QString unit) {
+RowData::RowData(int uniqueID, QString description, int value, QString unit) {
+    this->setUniqueID(uniqueID);
     this->setDescription(description);
     this->setValue(value);
     this->setUnit(unit);
@@ -14,6 +15,10 @@ RowData::RowData(QString description, int value, QString unit) {
 RowData::~RowData()
 {
 
+}
+
+int RowData::getUniqueID() {
+    return uniqueID;
 }
 
 QString RowData::getDescription() {
@@ -30,6 +35,10 @@ QString RowData::getUnit() {
     return unit;
 }
 
+void RowData::setUniqueID(int uniqueID) {
+    this->uniqueID = uniqueID;
+}
+
 void RowData::setDescription(QString description) {
     this->description = description;
 }
@@ -44,6 +53,6 @@ void RowData::setUnit(QString unit) {
 }
 
 QString RowData::toString() {
-    QString dataStr = "[" + getDescription() + ", " + QString::number(getValue()) + ", " + getUnit() + "]";
+    QString dataStr = "[" + QString::number(getUniqueID()) + ", " + getDescription() + ", " + QString::number(getValue()) + ", " + getUnit() + "]";
     return dataStr;
 }

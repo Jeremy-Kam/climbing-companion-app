@@ -14,6 +14,10 @@ QMap<QDateTime, RowData> WorkoutData::getWorkoutHistory() {
     return workoutHistory;
 }
 
+RowData WorkoutData::getLatestRowData() {
+    return workoutHistory.toStdMap().rbegin()->second;
+}
+
 
 void WorkoutData::setWorkoutHistory(QMap<QDateTime, RowData> newData) {
     this->workoutHistory = newData;

@@ -14,6 +14,7 @@ ClimbingApp::ClimbingApp(QWidget *parent)
         qDebug() << "File not open" << file.error();
     }else{
         qDebug() << "File is open";
+        /*
         QDataStream in(&file);    // read the data serialized from the file
         in >> workoutList;
 
@@ -33,7 +34,7 @@ ClimbingApp::ClimbingApp(QWidget *parent)
         // ui->reps->document()->setPlainText(QString::number(tempR));
         // ui->units->document()->setPlainText(tempU);
 
-        /*
+
         QVBoxLayout *layout = new QVBoxLayout(ui->centralwidget);
 
         ui->centralwidget->setLayout(layout);
@@ -72,6 +73,61 @@ ClimbingApp::ClimbingApp(QWidget *parent)
         columnNameLayout->addWidget(new QLabel("Units", columnNameWidget));
 
 
+        QDataStream in(&file);    // read the data serialized from the file
+
+        in >> workoutList;
+
+        qDebug() << "Number of elements: " << QString::number(workoutList.size());
+
+        for(int i = 0; i < workoutList.size(); ++i) {
+            WorkoutRow* newRow = new WorkoutRow(mainBox);
+            boxVLayout->addWidget(newRow);
+            listOfWorkoutRows.push_back(newRow);
+
+            RowData latestRowData = workoutList[i].getLatestRowData();
+
+            newRow->setDescription(latestRowData.getDescription());
+            newRow->setReps(latestRowData.getValue());
+            newRow->setUnits(latestRowData.getUnit());
+        }
+
+        // printData();
+
+        /*
+        while(in.atEnd() == false) {
+            qDebug() << "Runs";
+            WorkoutData temp;
+            in >> temp;
+
+            qDebug() << temp.toString();
+
+            workoutList.push_back(temp);
+
+
+            // WorkoutRow* newRow = new WorkoutRow(mainBox);
+            // boxVLayout->addWidget(newRow);
+            // listOfWorkoutRows.push_back(newRow);
+
+            // RowData latestRowData = temp.getLatestRowData();
+
+
+            // So the text does not show properly, but the function can get called without segmentation fault. However, printing the value causes segmentation fault?
+            // QString test = latestRowData.getDescription();
+
+            // newRow->setDescription(latestRowData.getDescription());
+            // newRow->setReps(latestRowData.getValue());
+            // newRow->setUnits(latestRowData.getUnit());
+
+            // qDebug() << latestRowData.getDescription() << " " << QString::number(latestRowData.getValue()) << " " << latestRowData.getUnit();
+
+
+
+            qDebug() << "Ends";
+        }
+
+        */
+
+        qDebug() << "Exits";
     }
 }
 
@@ -80,26 +136,37 @@ ClimbingApp::~ClimbingApp()
     QFile file("climbingworkoutdata.dat");
     file.open(QIODevice::WriteOnly);
     QDataStream out(&file);   // we will serialize the data into the file
-    out << workoutList;
+
+    for(int i = 0; i < workoutList.size(); ++i) {
+        out << workoutList[i];
+        qDebug() << "Loaded into .bat file";
+        // qDebug() << x.toString();
+    }
 
     qDebug() << "Destructor is run";
 
-    printData();
+    // printData();
 
     delete ui;
 }
 
 
-void ClimbingApp::setWorkoutList(WorkoutData workoutList) {
+void ClimbingApp::setWorkoutList(std::vector<WorkoutData> workoutList) {
     this->workoutList = workoutList;
 }
 
 QString ClimbingApp::toString() {
-    return workoutList.toString();
+    QString workoutStr = "";
+    for(WorkoutData x: workoutList) {
+        workoutStr += x.toString() + " | ";
+        qDebug() << "Went though once";
+    }
+
+    return workoutStr;
 }
 
 void ClimbingApp::printData() {
-    qDebug() << workoutList.getWorkoutHistory().toStdMap().begin()->first << ": " << toString();
+    qDebug() << workoutList[0].getWorkoutHistory().toStdMap().begin()->first << ": " << toString();
 }
 
 
@@ -123,7 +190,33 @@ void ClimbingApp::on_actionSave_triggered()
 
     // setWorkoutList(tempWorkoutData);
 
-    printData();
+    std::vector<WorkoutData> tempWorkoutList;
+
+    for(int i = 0; i < workoutList.size(); ++i) {
+        RowData tempRowData;
+
+        tempRowData.setUniqueID(i);
+        tempRowData.setDescription(listOfWorkoutRows[i]->getDescription()->text());
+
+        if(isInt(listOfWorkoutRows[i]->getReps()->text())) {
+            tempRowData.setValue(listOfWorkoutRows[i]->getReps()->text().toInt());
+        } else {
+            qDebug() << "Not integer value. Replaced with 0";
+            tempRowData.setValue(0);
+        }
+
+        tempRowData.setUnit(listOfWorkoutRows[i]->getUnits()->text());
+
+        // Maybe use overloaded QTimeZone to set it to the local time
+
+        WorkoutData tempWorkoutData;
+        tempWorkoutData.insertToWorkoutHistory(QDateTime::currentDateTime(), tempRowData);
+        tempWorkoutList.push_back(tempWorkoutData);
+    }
+
+    setWorkoutList(tempWorkoutList);
+
+    // printData();
 
 }
 
@@ -158,6 +251,8 @@ void ClimbingApp::on_actionAdd_Row_triggered()
 
     listOfWorkoutRows.push_back(newRow);
 
+    WorkoutData temp;
+    workoutList.push_back(temp);
 }
 
 
@@ -170,17 +265,20 @@ void ClimbingApp::on_actionDelete_Row_triggered()
 
     WorkoutRow* temp = listOfWorkoutRows[listOfWorkoutRows.size() - 1];
     listOfWorkoutRows.pop_back();
-
-    qDebug() << temp;
-
-    if(temp->layout() == nullptr) {
-        qDebug() << "wtf";
-    }
-
-    temp->layout()->removeWidget(temp);
     delete temp;
     temp = nullptr;
     qDebug() << "Delete row";
 }
 
+
+bool ClimbingApp::isInt(QString str) {
+    for(int i = 0; i < str.size(); ++i) {
+        if(!str[i].isDigit()) {
+            return false;
+        }
+    }
+    return true;
+}
+
 // cd Onedrive/Documents/Qt/Projects/ClimbingApp
+

@@ -19,13 +19,24 @@ class WorkoutRow : public QWidget
 public:
     explicit WorkoutRow(QWidget *parent = nullptr);
 
+    QLineEdit* getDescription();
+    QLineEdit* getReps();
+    QLineEdit* getUnits();
+
+    void setDescription(QString description);
+    void setReps(int reps);
+    void setUnits(QString reps);
+
 signals:
 
 
 
 private:
     QGroupBox mainBox;
-    QVBoxLayout boxVLayout;
+
+    QLineEdit* description;
+    QLineEdit* reps;
+    QLineEdit* units;
 
 };
 

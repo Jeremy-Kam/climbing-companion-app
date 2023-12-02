@@ -33,11 +33,13 @@ public:
     ClimbingApp(QWidget *parent = nullptr);
     ~ClimbingApp();
 
-    void setWorkoutList(WorkoutData workoutList);
+    void setWorkoutList(std::vector<WorkoutData> workoutList);
 
     QString toString();
 
     void printData();
+
+    bool isInt(QString str);
 
 private slots:
     void on_actionSave_triggered();
@@ -55,8 +57,8 @@ private:
 
     // Integer value is for order of workout, all the data is the rest of the data.
     // QMap<int, WorkoutData> workoutList;
-    WorkoutData workoutList;
-    // std::vector<WorkoutData> workoutList;
+    // WorkoutData workoutList;
+    std::vector<WorkoutData> workoutList;
 
     std::vector<WorkoutRow*> listOfWorkoutRows;
 

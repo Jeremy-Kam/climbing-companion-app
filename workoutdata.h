@@ -33,12 +33,13 @@ public:
     void setWorkoutHistory(QMap<QDateTime, RowData> newData);
     void insertToWorkoutHistory(QDateTime date, RowData data);
 
+    RowData getLatestRowData();
+
     QString toString();
 
 private:
     // Use the most recent entry to display, but it stores all past edits.
     QMap<QDateTime, RowData> workoutHistory;
-    // rowData workoutHistory;
 
 };
 
@@ -56,12 +57,13 @@ inline QDataStream& operator<<( QDataStream &out, WorkoutData& t )
 }
 
 
-inline QDataStream& operator>>( QDataStream &in, WorkoutData& t)
+inline QDataStream& operator>>( QDataStream &in, WorkoutData& t )
 {
     QDateTime tempDate;
     RowData tempRowData;
 
     QMap<QDateTime, RowData> tempWorkoutHistory;
+
 
     while(!in.atEnd()) {
         in >> tempDate;
@@ -71,6 +73,48 @@ inline QDataStream& operator>>( QDataStream &in, WorkoutData& t)
     }
 
     t.setWorkoutHistory(tempWorkoutHistory);
+
+    return in;
+}
+
+inline QDataStream& operator>>( QDataStream &in, std::vector<WorkoutData>& t )
+{
+    int uniqueID;
+    QDateTime tempDate;
+    RowData tempRowData;
+    QMap<QDateTime, RowData> tempWorkoutHistory;
+
+    if(in.atEnd()) { // Empty list
+        qDebug() << "Empty List";
+        return in;
+    }
+
+    in >> tempDate;
+    in >> tempRowData;
+
+    uniqueID = tempRowData.getUniqueID();
+
+    tempWorkoutHistory.insert(tempDate, tempRowData);
+
+    while(!in.atEnd()) {
+        in >> tempDate;
+        in >> tempRowData;
+
+        if(tempRowData.getUniqueID() != uniqueID) { // New element, reset everything and push element into it.
+            WorkoutData tempWorkoutData;
+            tempWorkoutData.setWorkoutHistory(tempWorkoutHistory);
+
+            t.push_back(tempWorkoutData);
+
+            tempWorkoutHistory.clear();
+        }
+        tempWorkoutHistory.insert(tempDate, tempRowData);
+    }
+
+    WorkoutData tempWorkoutData;
+    tempWorkoutData.setWorkoutHistory(tempWorkoutHistory);
+
+    t.push_back(tempWorkoutData);
 
     return in;
 }
