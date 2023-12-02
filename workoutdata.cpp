@@ -27,6 +27,12 @@ void WorkoutData::insertToWorkoutHistory(QDateTime date, RowData data) {
     this->workoutHistory.insert(date, data);
 }
 
+void WorkoutData::printAllData() {
+    for(auto x: workoutHistory.toStdMap()) {
+        qDebug() << x.first << ": " << x.second.toString() << " | ";
+    }
+}
+
 QString WorkoutData::toString() {
     QString dataStr = "";
     for(auto x: workoutHistory.toStdMap()) {

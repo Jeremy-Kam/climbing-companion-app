@@ -166,7 +166,10 @@ QString ClimbingApp::toString() {
 }
 
 void ClimbingApp::printData() {
-    qDebug() << workoutList[0].getWorkoutHistory().toStdMap().begin()->first << ": " << toString();
+    for(WorkoutData x: workoutList) {
+        x.printAllData();
+        qDebug();
+    }
 }
 
 
@@ -190,8 +193,6 @@ void ClimbingApp::on_actionSave_triggered()
 
     // setWorkoutList(tempWorkoutData);
 
-    std::vector<WorkoutData> tempWorkoutList;
-
     for(int i = 0; i < workoutList.size(); ++i) {
         RowData tempRowData;
 
@@ -209,12 +210,8 @@ void ClimbingApp::on_actionSave_triggered()
 
         // Maybe use overloaded QTimeZone to set it to the local time
 
-        WorkoutData tempWorkoutData;
-        tempWorkoutData.insertToWorkoutHistory(QDateTime::currentDateTime(), tempRowData);
-        tempWorkoutList.push_back(tempWorkoutData);
+        workoutList[i].insertToWorkoutHistory(QDateTime::currentDateTime(), tempRowData);
     }
-
-    setWorkoutList(tempWorkoutList);
 
     // printData();
 

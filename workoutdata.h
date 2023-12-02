@@ -35,6 +35,8 @@ public:
 
     RowData getLatestRowData();
 
+    void printAllData();
+
     QString toString();
 
 private:
@@ -105,6 +107,7 @@ inline QDataStream& operator>>( QDataStream &in, std::vector<WorkoutData>& t )
             tempWorkoutData.setWorkoutHistory(tempWorkoutHistory);
 
             t.push_back(tempWorkoutData);
+            uniqueID = tempRowData.getUniqueID();
 
             tempWorkoutHistory.clear();
         }
