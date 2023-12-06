@@ -14,45 +14,6 @@ ClimbingApp::ClimbingApp(QWidget *parent)
         qDebug() << "File not open" << file.error();
     }else{
         qDebug() << "File is open";
-        /*
-        QDataStream in(&file);    // read the data serialized from the file
-        in >> workoutList;
-
-        std::map<QDateTime, RowData> tempMap = workoutList.getWorkoutHistory().toStdMap();
-
-        QString tempD;
-        int tempR;
-        QString tempU;
-        for(auto x: tempMap) {
-            tempD = x.second.getDescription();
-            tempR = x.second.getValue();
-            tempU = x.second.getUnit();
-        }
-
-
-        // ui->description->document()->setPlainText(tempD);
-        // ui->reps->document()->setPlainText(QString::number(tempR));
-        // ui->units->document()->setPlainText(tempU);
-
-
-        QVBoxLayout *layout = new QVBoxLayout(ui->centralwidget);
-
-        ui->centralwidget->setLayout(layout);
-
-        QGroupBox *box = new QGroupBox("Dishes:", ui->centralwidget);
-        QVBoxLayout *boxLayout = new QVBoxLayout(box);
-
-        layout->addWidget(box);
-
-        // Column name
-        QWidget* columnNameWidget = new QWidget(box);
-        boxLayout->addWidget(columnNameWidget);
-
-        QHBoxLayout *columnNameLayout = new QHBoxLayout(columnNameWidget);
-        columnNameLayout->addWidget(new QLabel("Description", columnNameWidget));
-        columnNameLayout->addWidget(new QLabel("Reps", columnNameWidget));
-        columnNameLayout->addWidget(new QLabel("Units", columnNameWidget));
-        */
 
         mainVLayout = new QVBoxLayout(ui->centralwidget);
 
@@ -93,41 +54,66 @@ ClimbingApp::ClimbingApp(QWidget *parent)
 
         // printData();
 
-        /*
-        while(in.atEnd() == false) {
-            qDebug() << "Runs";
-            WorkoutData temp;
-            in >> temp;
+        QLineSeries *lseries = new QLineSeries();
 
-            qDebug() << temp.toString();
+        QMap<QDateTime, RowData> tempWorkoutHistory = workoutList[0].getWorkoutHistory();
 
-            workoutList.push_back(temp);
+        int minValue = std::numeric_limits<int>::max();
+        int maxValue = -1;
 
-
-            // WorkoutRow* newRow = new WorkoutRow(mainBox);
-            // boxVLayout->addWidget(newRow);
-            // listOfWorkoutRows.push_back(newRow);
-
-            // RowData latestRowData = temp.getLatestRowData();
-
-
-            // So the text does not show properly, but the function can get called without segmentation fault. However, printing the value causes segmentation fault?
-            // QString test = latestRowData.getDescription();
-
-            // newRow->setDescription(latestRowData.getDescription());
-            // newRow->setReps(latestRowData.getValue());
-            // newRow->setUnits(latestRowData.getUnit());
-
-            // qDebug() << latestRowData.getDescription() << " " << QString::number(latestRowData.getValue()) << " " << latestRowData.getUnit();
-
-
-
-            qDebug() << "Ends";
+        // TODO: Set manual axis so user knows when it was updated
+        for(auto x: tempWorkoutHistory.toStdMap()) {
+            lseries->append(x.first.toMSecsSinceEpoch(), x.second.getValue());
+            minValue = std::min(minValue, x.second.getValue());
+            maxValue = std::max(maxValue, x.second.getValue());
         }
 
-        */
+        QChart *chart = new QChart();
+        chart->legend()->hide();
+        chart->addSeries(lseries);
+        // chart->createDefaultAxes();
 
-        qDebug() << "Exits";
+        // Customize the title font
+        QFont font;
+        font.setPixelSize(18);
+        chart->setTitleFont(font);
+        chart->setTitleBrush(QBrush(Qt::black));
+        chart->setTitle(workoutList[0].getLatestRowData().getDescription());
+
+        // Change the line color and weight
+        QPen pen(QRgb(0x000000));
+        pen.setWidth(3);
+        lseries->setPen(pen);
+
+        QList tempVertical = chart->axes(Qt::Vertical);
+
+        // tempHorizontal.back()->setRange(-35, 135);
+
+        QDateTimeAxis* axisX = new QDateTimeAxis();
+        axisX->setTickCount(10);
+        axisX->setFormat("dd MMM yyyy");
+        axisX->setTitleText("Date");
+        chart->addAxis(axisX, Qt::AlignBottom);
+        lseries->attachAxis(axisX);
+
+        // TODO, distinguish between reps and weight, and update axis title accordingly
+        QValueAxis* axisY = new QValueAxis();
+        axisY->setLabelFormat("%i");
+        axisY->setTitleText("Units [" + workoutList[0].getLatestRowData().getUnit() + "]");
+        axisY->setRange(std::max(minValue - 2, 0), maxValue + 2);
+        chart->addAxis(axisY, Qt::AlignLeft);
+        lseries->attachAxis(axisY);
+
+
+        chart->setAnimationOptions(QChart::AllAnimations);
+
+
+        // Used to display the chart
+        QChartView *chartView = new QChartView(chart);
+        chartView->setRenderHint(QPainter::Antialiasing);
+
+        mainVLayout->addWidget(chartView);
+
     }
 }
 

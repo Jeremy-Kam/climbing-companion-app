@@ -2,6 +2,9 @@
 #define CLIMBINGAPP_H
 
 #include "workoutdata.h"
+
+#include <limits>
+
 #include <QMainWindow>
 #include <QDateTime>
 #include <QMap>
@@ -18,6 +21,12 @@
 #include <QLabel>
 #include <QLineEdit>
 #include <QGroupBox>
+#include <QtCharts>
+#include <QtCharts/QLegend>
+#include <QtCharts/QBarCategoryAxis>
+#include <QtCharts/QLineSeries>
+#include <QtCharts/QCategoryAxis>
+
 
 #include "workoutrow.h"
 
