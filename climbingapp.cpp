@@ -54,65 +54,71 @@ ClimbingApp::ClimbingApp(QWidget *parent)
 
         // printData();
 
-        QLineSeries *lseries = new QLineSeries();
 
-        QMap<QDateTime, RowData> tempWorkoutHistory = workoutList[0].getWorkoutHistory();
+        for(int i = 0; i < workoutList.size(); ++i) {
+            // We currently have no way of referencing the series
+            QLineSeries *lseries = new QLineSeries();
 
-        int minValue = std::numeric_limits<int>::max();
-        int maxValue = -1;
+            QMap<QDateTime, RowData> tempWorkoutHistory = workoutList[i].getWorkoutHistory();
 
-        // TODO: Set manual axis so user knows when it was updated
-        for(auto x: tempWorkoutHistory.toStdMap()) {
-            lseries->append(x.first.toMSecsSinceEpoch(), x.second.getValue());
-            minValue = std::min(minValue, x.second.getValue());
-            maxValue = std::max(maxValue, x.second.getValue());
+            int minValue = std::numeric_limits<int>::max();
+            int maxValue = -1;
+
+            // TODO: Set manual axis so user knows when it was updated
+            for(auto x: tempWorkoutHistory.toStdMap()) {
+                lseries->append(x.first.toMSecsSinceEpoch(), x.second.getValue());
+                minValue = std::min(minValue, x.second.getValue());
+                maxValue = std::max(maxValue, x.second.getValue());
+            }
+
+            QChart *chart = new QChart();
+            chart->legend()->hide();
+            chart->addSeries(lseries);
+            // chart->createDefaultAxes();
+
+            // Customize the title font
+            QFont font;
+            font.setPixelSize(18);
+            chart->setTitleFont(font);
+            chart->setTitleBrush(QBrush(Qt::black));
+            chart->setTitle(workoutList[0].getLatestRowData().getDescription());
+
+            // Change the line color and weight
+            QPen pen(QRgb(0x000000));
+            pen.setWidth(3);
+            lseries->setPen(pen);
+
+            QList tempVertical = chart->axes(Qt::Vertical);
+
+            // tempHorizontal.back()->setRange(-35, 135);
+
+            QDateTimeAxis* axisX = new QDateTimeAxis();
+            axisX->setTickCount(10);
+            axisX->setFormat("dd MMM yyyy");
+            axisX->setTitleText("Date");
+            chart->addAxis(axisX, Qt::AlignBottom);
+            lseries->attachAxis(axisX);
+
+            // TODO, distinguish between reps and weight, and update axis title accordingly
+            QValueAxis* axisY = new QValueAxis();
+            axisY->setLabelFormat("%i");
+            axisY->setTitleText("Units [" + workoutList[0].getLatestRowData().getUnit() + "]");
+            axisY->setRange(std::max(minValue - 2, 0), maxValue + 2);
+            chart->addAxis(axisY, Qt::AlignLeft);
+            lseries->attachAxis(axisY);
+
+
+            chart->setAnimationOptions(QChart::AllAnimations);
+
+
+            // Used to display the chart
+            QChartView *chartView = new QChartView(chart);
+            chartView->setRenderHint(QPainter::Antialiasing);
+
+            mainVLayout->addWidget(chartView);
         }
 
-        QChart *chart = new QChart();
-        chart->legend()->hide();
-        chart->addSeries(lseries);
-        // chart->createDefaultAxes();
 
-        // Customize the title font
-        QFont font;
-        font.setPixelSize(18);
-        chart->setTitleFont(font);
-        chart->setTitleBrush(QBrush(Qt::black));
-        chart->setTitle(workoutList[0].getLatestRowData().getDescription());
-
-        // Change the line color and weight
-        QPen pen(QRgb(0x000000));
-        pen.setWidth(3);
-        lseries->setPen(pen);
-
-        QList tempVertical = chart->axes(Qt::Vertical);
-
-        // tempHorizontal.back()->setRange(-35, 135);
-
-        QDateTimeAxis* axisX = new QDateTimeAxis();
-        axisX->setTickCount(10);
-        axisX->setFormat("dd MMM yyyy");
-        axisX->setTitleText("Date");
-        chart->addAxis(axisX, Qt::AlignBottom);
-        lseries->attachAxis(axisX);
-
-        // TODO, distinguish between reps and weight, and update axis title accordingly
-        QValueAxis* axisY = new QValueAxis();
-        axisY->setLabelFormat("%i");
-        axisY->setTitleText("Units [" + workoutList[0].getLatestRowData().getUnit() + "]");
-        axisY->setRange(std::max(minValue - 2, 0), maxValue + 2);
-        chart->addAxis(axisY, Qt::AlignLeft);
-        lseries->attachAxis(axisY);
-
-
-        chart->setAnimationOptions(QChart::AllAnimations);
-
-
-        // Used to display the chart
-        QChartView *chartView = new QChartView(chart);
-        chartView->setRenderHint(QPainter::Antialiasing);
-
-        mainVLayout->addWidget(chartView);
 
     }
 }
@@ -163,22 +169,6 @@ void ClimbingApp::on_actionSave_triggered()
 {
     qDebug() << "Saved";
 
-    // RowData* tempRowData = new RowData(ui->description->toPlainText(), ui->reps->toPlainText().toInt(), ui->units->toPlainText());
-
-
-    // RowData tempRowData;
-    // tempRowData.setDescription(ui->description->toPlainText());
-
-    // TODO: Run a check if the value is actually an int
-    // tempRowData.setValue(ui->reps->toPlainText().toInt());
-    // tempRowData.setUnit(ui->units->toPlainText());
-
-    // WorkoutData tempWorkoutData;
-    // Maybe use overloaded QTimeZone to set it to the local time
-    // tempWorkoutData.insertToWorkoutHistory(QDateTime::currentDateTime(), tempRowData);
-
-    // setWorkoutList(tempWorkoutData);
-
     for(int i = 0; i < workoutList.size(); ++i) {
         RowData tempRowData;
 
@@ -217,17 +207,6 @@ void ClimbingApp::on_actionDebug_triggered()
 
 void ClimbingApp::on_actionAdd_Row_triggered()
 {
-    /*
-    // Row of workout
-    QWidget* workoutElementWidget = new QWidget(mainBox);
-    boxVLayout->addWidget(workoutElementWidget);
-
-    QHBoxLayout *workoutElementLayout = new QHBoxLayout(workoutElementWidget);
-    workoutElementLayout->addWidget(new QLineEdit(workoutElementWidget));
-    workoutElementLayout->addWidget(new QLineEdit(workoutElementWidget));
-    workoutElementLayout->addWidget(new QLineEdit(workoutElementWidget));
-    */
-
     WorkoutRow* newRow = new WorkoutRow(mainBox);
 
     boxVLayout->addWidget(newRow);
