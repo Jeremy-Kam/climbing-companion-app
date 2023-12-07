@@ -15,6 +15,9 @@ ClimbingApp::ClimbingApp(QWidget *parent)
     }else{
         qDebug() << "File is open";
 
+        //QScrollArea *scrollArea = new QScrollArea();
+        //scrollArea->setBackgroundRole(QPalette::Dark);
+
         mainVLayout = new QVBoxLayout(ui->centralwidget);
 
         ui->centralwidget->setLayout(mainVLayout);
@@ -23,6 +26,8 @@ ClimbingApp::ClimbingApp(QWidget *parent)
         boxVLayout = new QVBoxLayout(mainBox);
 
         mainVLayout->addWidget(mainBox);
+
+
 
         // Column name
         QWidget* columnNameWidget = new QWidget(mainBox);
@@ -90,7 +95,7 @@ ClimbingApp::ClimbingApp(QWidget *parent)
             chart->setTitle(workoutList[i].getLatestRowData().getDescription());
 
             // Change the line color and weight
-            QPen pen(QRgb(0x000000));
+            QPen pen((QRgb(graphColors[rand() % graphColors.size()])));
             pen.setWidth(3);
             lseries->setPen(pen);
 

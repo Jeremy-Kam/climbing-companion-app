@@ -26,7 +26,8 @@
 #include <QtCharts/QBarCategoryAxis>
 #include <QtCharts/QLineSeries>
 #include <QtCharts/QCategoryAxis>
-
+\
+#include <QScrollArea>
 
 #include "workoutrow.h"
 
@@ -79,6 +80,8 @@ private:
 
     // The vertical layout that is in the box
     QVBoxLayout* boxVLayout;
+
+    std::vector<unsigned int> graphColors = {0x076CE8, 0x00E6D2, 0xBF6000, 0xFF6C23, 0x334A66};
 
 
 };
