@@ -30,7 +30,7 @@ ClimbingApp::ClimbingApp(QWidget *parent)
 
         QHBoxLayout *columnNameLayout = new QHBoxLayout(columnNameWidget);
         columnNameLayout->addWidget(new QLabel("Description", columnNameWidget));
-        columnNameLayout->addWidget(new QLabel("Reps", columnNameWidget));
+        columnNameLayout->addWidget(new QLabel("Reps/Weight", columnNameWidget));
         columnNameLayout->addWidget(new QLabel("Units", columnNameWidget));
 
 
@@ -64,12 +64,18 @@ ClimbingApp::ClimbingApp(QWidget *parent)
             int minValue = std::numeric_limits<int>::max();
             int maxValue = -1;
 
+            // Data point set to today's date on the graph so it doesn't cut off at the last time it was changed
+            int latestValue;
+
             // TODO: Set manual axis so user knows when it was updated
             for(auto x: tempWorkoutHistory.toStdMap()) {
-                lseries->append(x.first.toMSecsSinceEpoch(), x.second.getValue());
-                minValue = std::min(minValue, x.second.getValue());
-                maxValue = std::max(maxValue, x.second.getValue());
+                latestValue = x.second.getValue();
+                lseries->append(x.first.toMSecsSinceEpoch(), latestValue);
+                minValue = std::min(minValue, latestValue);
+                maxValue = std::max(maxValue, latestValue);
             }
+
+            lseries->append(QDateTime::currentMSecsSinceEpoch(), latestValue);
 
             QChart *chart = new QChart();
             chart->legend()->hide();
@@ -81,7 +87,7 @@ ClimbingApp::ClimbingApp(QWidget *parent)
             font.setPixelSize(18);
             chart->setTitleFont(font);
             chart->setTitleBrush(QBrush(Qt::black));
-            chart->setTitle(workoutList[0].getLatestRowData().getDescription());
+            chart->setTitle(workoutList[i].getLatestRowData().getDescription());
 
             // Change the line color and weight
             QPen pen(QRgb(0x000000));
@@ -102,7 +108,7 @@ ClimbingApp::ClimbingApp(QWidget *parent)
             // TODO, distinguish between reps and weight, and update axis title accordingly
             QValueAxis* axisY = new QValueAxis();
             axisY->setLabelFormat("%i");
-            axisY->setTitleText("Units [" + workoutList[0].getLatestRowData().getUnit() + "]");
+            axisY->setTitleText("Reps/Weight [" + workoutList[i].getLatestRowData().getUnit() + "]");
             axisY->setRange(std::max(minValue - 2, 0), maxValue + 2);
             chart->addAxis(axisY, Qt::AlignLeft);
             lseries->attachAxis(axisY);
