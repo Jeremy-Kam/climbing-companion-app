@@ -63,20 +63,20 @@ ClimbingApp::ClimbingApp(QWidget *parent)
 
         // printData();
 
-        graphVLayout = new QVBoxLayout();
+        // graphVLayout = new QVBoxLayout();
 
-        /*
-        flowLayout = new FlowLayout();
+
+        graphFLayout = new FlowLayout();
         QWidget* scrollAreaContent = new QWidget();
-        scrollAreaContent->setLayout(flowLayout);
+        scrollAreaContent->setLayout(graphFLayout);
         QScrollArea* scrollArea = new QScrollArea();
-        scrollArea->setHorizontalScrollBarPolicy( Qt::ScrollBarAlwaysOff );
-        scrollArea->setVerticalScrollBarPolicy( Qt::ScrollBarAsNeeded );
-        scrollArea->setWidgetResizable( true );
+        scrollArea->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
+        scrollArea->setVerticalScrollBarPolicy(Qt::ScrollBarAsNeeded);
+        scrollArea->setWidgetResizable(true);
         scrollArea->setWidget(scrollAreaContent);
-        */
 
-        mainVLayout->addLayout(graphVLayout);
+
+        mainVLayout->addWidget(scrollArea);
 
 
         for(int i = 0; i < workoutList.size(); ++i) {
@@ -140,12 +140,11 @@ ClimbingApp::ClimbingApp(QWidget *parent)
 
             chart->setAnimationOptions(QChart::AllAnimations);
 
-
             // Used to display the chart
             QChartView *chartView = new QChartView(chart);
             chartView->setRenderHint(QPainter::Antialiasing);
 
-            graphVLayout->addWidget(chartView);
+            graphFLayout->addWidget(chartView);
         }
 
 

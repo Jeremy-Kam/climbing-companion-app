@@ -27,7 +27,7 @@
 #include <QScrollArea>
 
 #include "workoutrow.h"
-// #include "flowlayout.h"
+#include "flowlayout.h"
 
 QT_BEGIN_NAMESPACE
 namespace Ui { class ClimbingApp; }
@@ -80,7 +80,8 @@ private:
     QVBoxLayout* boxVLayout;
 
     // Vertical layout that stores the graphs
-    QVBoxLayout* graphVLayout;
+    // QVBoxLayout* graphVLayout;
+    FlowLayout* graphFLayout;
 
     std::vector<unsigned int> graphColors = {0x076CE8, 0x00E6D2, 0xBF6000, 0xFF6C23, 0x334A66};
 
