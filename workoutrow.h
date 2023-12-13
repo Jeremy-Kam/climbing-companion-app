@@ -38,6 +38,11 @@ private:
     QLineEdit* reps;
     QLineEdit* units;
 
+
+
+    int rowHeight = 30;
+    int repsUnitLabelWidth = 100;
+
 };
 
 #endif // WORKOUTROW_H

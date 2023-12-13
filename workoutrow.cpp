@@ -6,8 +6,15 @@ WorkoutRow::WorkoutRow(QWidget *parent)
     QHBoxLayout *workoutElementLayout = new QHBoxLayout(this);
 
     description = new QLineEdit();
+    description->setFixedHeight(rowHeight);
+
     reps = new QLineEdit();
+    reps->setFixedHeight(rowHeight);
+    reps->setFixedWidth(repsUnitLabelWidth);
+
     units = new QLineEdit();
+    units->setFixedHeight(rowHeight);
+    units->setFixedWidth(repsUnitLabelWidth);
 
     workoutElementLayout->addWidget(description);
     workoutElementLayout->addWidget(reps);

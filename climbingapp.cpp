@@ -38,9 +38,20 @@ ClimbingApp::ClimbingApp(QWidget *parent)
         boxVLayout->addWidget(columnNameWidget);
 
         QHBoxLayout *columnNameLayout = new QHBoxLayout(columnNameWidget);
-        columnNameLayout->addWidget(new QLabel("Description", columnNameWidget));
-        columnNameLayout->addWidget(new QLabel("Reps/Weight", columnNameWidget));
-        columnNameLayout->addWidget(new QLabel("Units", columnNameWidget));
+
+        QLabel* description = new QLabel("Description", columnNameWidget);
+        description->setFixedHeight(labelHeight);
+        columnNameLayout->addWidget(description);
+
+        QLabel* reps = new QLabel("Reps/Weight", columnNameWidget);
+        reps->setFixedHeight(labelHeight);
+        reps->setFixedWidth(repsUnitsWidth);
+        columnNameLayout->addWidget(reps);
+
+        QLabel* units = new QLabel("Units", columnNameWidget);
+        units->setFixedHeight(labelHeight);
+        units->setFixedWidth(repsUnitsWidth);
+        columnNameLayout->addWidget(units);
 
 
         QDataStream in(&file);    // read the data serialized from the file
@@ -63,21 +74,18 @@ ClimbingApp::ClimbingApp(QWidget *parent)
 
         // printData();
 
-        // graphVLayout = new QVBoxLayout();
+        graphVLayout = new QVBoxLayout();
 
 
-        graphFLayout = new FlowLayout();
         QWidget* scrollAreaContent = new QWidget();
-        scrollAreaContent->setLayout(graphFLayout);
+        scrollAreaContent->setLayout(graphVLayout);
         QScrollArea* scrollArea = new QScrollArea();
         scrollArea->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
         scrollArea->setVerticalScrollBarPolicy(Qt::ScrollBarAsNeeded);
         scrollArea->setWidgetResizable(true);
         scrollArea->setWidget(scrollAreaContent);
 
-
         mainVLayout->addWidget(scrollArea);
-
 
         for(int i = 0; i < workoutList.size(); ++i) {
             // We currently have no way of referencing the series
@@ -144,7 +152,9 @@ ClimbingApp::ClimbingApp(QWidget *parent)
             QChartView *chartView = new QChartView(chart);
             chartView->setRenderHint(QPainter::Antialiasing);
 
-            graphFLayout->addWidget(chartView);
+            chartView->setFixedHeight(500);
+
+            graphVLayout->addWidget(chartView);
         }
 
 
