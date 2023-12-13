@@ -23,9 +23,6 @@
 class WorkoutData
 {
 public:
-
-
-
     WorkoutData();
     ~WorkoutData();
 

@@ -3,8 +3,6 @@
 
 #include "workoutdata.h"
 
-#include <limits>
-
 #include <QMainWindow>
 #include <QDateTime>
 #include <QMap>
@@ -26,10 +24,10 @@
 #include <QtCharts/QBarCategoryAxis>
 #include <QtCharts/QLineSeries>
 #include <QtCharts/QCategoryAxis>
-\
 #include <QScrollArea>
 
 #include "workoutrow.h"
+// #include "flowlayout.h"
 
 QT_BEGIN_NAMESPACE
 namespace Ui { class ClimbingApp; }
@@ -80,6 +78,9 @@ private:
 
     // The vertical layout that is in the box
     QVBoxLayout* boxVLayout;
+
+    // Vertical layout that stores the graphs
+    QVBoxLayout* graphVLayout;
 
     std::vector<unsigned int> graphColors = {0x076CE8, 0x00E6D2, 0xBF6000, 0xFF6C23, 0x334A66};
 

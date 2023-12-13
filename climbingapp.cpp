@@ -15,8 +15,11 @@ ClimbingApp::ClimbingApp(QWidget *parent)
     }else{
         qDebug() << "File is open";
 
-        //QScrollArea *scrollArea = new QScrollArea();
-        //scrollArea->setBackgroundRole(QPalette::Dark);
+        // QScrollArea *scrollArea = new QScrollArea();
+        // scrollArea->setBackgroundRole(QPalette::Highlight);
+        // scrollArea->setWidget(ui->centralwidget);
+        // scrollArea->setWidgetResizable(true);
+        // scrollArea->setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOn);
 
         mainVLayout = new QVBoxLayout(ui->centralwidget);
 
@@ -27,6 +30,7 @@ ClimbingApp::ClimbingApp(QWidget *parent)
 
         mainVLayout->addWidget(mainBox);
 
+        // boxVLayout->addWidget(scrollArea);
 
 
         // Column name
@@ -58,6 +62,21 @@ ClimbingApp::ClimbingApp(QWidget *parent)
         }
 
         // printData();
+
+        graphVLayout = new QVBoxLayout();
+
+        /*
+        flowLayout = new FlowLayout();
+        QWidget* scrollAreaContent = new QWidget();
+        scrollAreaContent->setLayout(flowLayout);
+        QScrollArea* scrollArea = new QScrollArea();
+        scrollArea->setHorizontalScrollBarPolicy( Qt::ScrollBarAlwaysOff );
+        scrollArea->setVerticalScrollBarPolicy( Qt::ScrollBarAsNeeded );
+        scrollArea->setWidgetResizable( true );
+        scrollArea->setWidget(scrollAreaContent);
+        */
+
+        mainVLayout->addLayout(graphVLayout);
 
 
         for(int i = 0; i < workoutList.size(); ++i) {
@@ -126,7 +145,7 @@ ClimbingApp::ClimbingApp(QWidget *parent)
             QChartView *chartView = new QChartView(chart);
             chartView->setRenderHint(QPainter::Antialiasing);
 
-            mainVLayout->addWidget(chartView);
+            graphVLayout->addWidget(chartView);
         }
 
 
