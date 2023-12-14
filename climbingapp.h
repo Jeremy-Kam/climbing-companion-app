@@ -25,6 +25,7 @@
 #include <QtCharts/QLineSeries>
 #include <QtCharts/QCategoryAxis>
 #include <QScrollArea>
+#include <QSpacerItem>
 
 #include "workoutrow.h"
 

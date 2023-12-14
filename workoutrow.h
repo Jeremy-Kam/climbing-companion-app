@@ -12,6 +12,7 @@
 #include <QLabel>
 #include <QLineEdit>
 #include <QGroupBox>
+#include <QPushButton>
 
 class WorkoutRow : public QWidget
 {
@@ -38,10 +39,12 @@ private:
     QLineEdit* reps;
     QLineEdit* units;
 
-
+    QPushButton* editButton;
+    QPushButton* deleteButton;
 
     int rowHeight = 30;
     int repsUnitLabelWidth = 100;
+    int buttonWidth = 30;
 
 };
 

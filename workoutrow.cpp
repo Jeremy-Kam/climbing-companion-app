@@ -16,9 +16,20 @@ WorkoutRow::WorkoutRow(QWidget *parent)
     units->setFixedHeight(rowHeight);
     units->setFixedWidth(repsUnitLabelWidth);
 
+    editButton = new QPushButton();
+    editButton->setFixedHeight(rowHeight);
+    editButton->setFixedWidth(buttonWidth);
+
+    deleteButton = new QPushButton();
+    deleteButton->setFixedHeight(rowHeight);
+    deleteButton->setFixedWidth(buttonWidth);
+
     workoutElementLayout->addWidget(description);
     workoutElementLayout->addWidget(reps);
     workoutElementLayout->addWidget(units);
+
+    workoutElementLayout->addWidget(editButton);
+    workoutElementLayout->addWidget(deleteButton);
 
     this->setLayout(workoutElementLayout);
 

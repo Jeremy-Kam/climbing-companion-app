@@ -53,6 +53,16 @@ ClimbingApp::ClimbingApp(QWidget *parent)
         units->setFixedWidth(repsUnitsWidth);
         columnNameLayout->addWidget(units);
 
+        QLabel* editSpacer = new QLabel();
+        editSpacer->setFixedHeight(labelHeight);
+        editSpacer->setFixedWidth(labelHeight);
+        columnNameLayout->addWidget(editSpacer);
+
+        QLabel* deleteSpacer = new QLabel();
+        deleteSpacer->setFixedHeight(labelHeight);
+        deleteSpacer->setFixedWidth(labelHeight);
+        columnNameLayout->addWidget(deleteSpacer);
+
 
         QDataStream in(&file);    // read the data serialized from the file
 
