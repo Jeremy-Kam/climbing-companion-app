@@ -1,6 +1,6 @@
 #include "workoutrow.h"
 
-WorkoutRow::WorkoutRow(QWidget *parent)
+WorkoutRow::WorkoutRow(QWidget *parent, int index)
     : QWidget{parent}
 {
     QHBoxLayout *workoutElementLayout = new QHBoxLayout(this);
@@ -33,6 +33,10 @@ WorkoutRow::WorkoutRow(QWidget *parent)
 
     this->setLayout(workoutElementLayout);
 
+    this->index = index;
+
+    QObject::connect(editButton, &QPushButton::clicked, this, &WorkoutRow::editButtonPressed);
+    QObject::connect(deleteButton, &QPushButton::clicked, this, &WorkoutRow::deleteButtonPressed);
 }
 
 QLineEdit* WorkoutRow::getDescription() {
@@ -57,4 +61,18 @@ void WorkoutRow::setReps(int reps) {
 
 void WorkoutRow::setUnits(QString units) {
     this->units->setText(units);
+}
+
+void WorkoutRow::editButtonPressed() {
+    qDebug() << "Edit Button Pressed: " + QString::number(index);
+    emit openEditWindow(index);
+}
+
+void WorkoutRow::deleteButtonPressed() {
+    qDebug() << "Delete Button Pressed: " + QString::number(index);
+    emit deleteRow(index);
+}
+
+void WorkoutRow::setIndex(int index) {
+    this->index = index;
 }

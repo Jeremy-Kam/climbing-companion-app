@@ -60,6 +60,10 @@ private slots:
 
     void on_actionDelete_Row_triggered();
 
+    void openEditWindow(int index);
+
+    void deleteRowAtIndex(int index);
+
 private:
     Ui::ClimbingApp *ui;
 

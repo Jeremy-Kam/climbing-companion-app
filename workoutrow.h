@@ -18,7 +18,7 @@ class WorkoutRow : public QWidget
 {
     Q_OBJECT
 public:
-    explicit WorkoutRow(QWidget *parent = nullptr);
+    explicit WorkoutRow(QWidget *parent = nullptr, int index = -1);
 
     QLineEdit* getDescription();
     QLineEdit* getReps();
@@ -28,11 +28,20 @@ public:
     void setReps(int reps);
     void setUnits(QString reps);
 
-signals:
+    void setIndex(int index);
 
+signals:
+    void openEditWindow(int index);
+    void deleteRow(int index);
+
+private slots:
+    void editButtonPressed();
+    void deleteButtonPressed();
 
 
 private:
+    int index;
+
     QGroupBox mainBox;
 
     QLineEdit* description;

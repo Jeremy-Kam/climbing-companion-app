@@ -41,3 +41,7 @@ QString WorkoutData::toString() {
 
     return dataStr;
 }
+
+void WorkoutData::openEditWindow() {
+    qDebug() << "window open";
+}

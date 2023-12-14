@@ -71,7 +71,11 @@ ClimbingApp::ClimbingApp(QWidget *parent)
         qDebug() << "Number of elements: " << QString::number(workoutList.size());
 
         for(int i = 0; i < workoutList.size(); ++i) {
-            WorkoutRow* newRow = new WorkoutRow(mainBox);
+            WorkoutRow* newRow = new WorkoutRow(mainBox, listOfWorkoutRows.size());
+
+            QObject::connect(newRow, &WorkoutRow::openEditWindow, this, &ClimbingApp::openEditWindow);
+            QObject::connect(newRow, &WorkoutRow::deleteRow, this, &ClimbingApp::deleteRowAtIndex);
+
             boxVLayout->addWidget(newRow);
             listOfWorkoutRows.push_back(newRow);
 
@@ -256,7 +260,10 @@ void ClimbingApp::on_actionDebug_triggered()
 
 void ClimbingApp::on_actionAdd_Row_triggered()
 {
-    WorkoutRow* newRow = new WorkoutRow(mainBox);
+    WorkoutRow* newRow = new WorkoutRow(mainBox, listOfWorkoutRows.size());
+
+    QObject::connect(newRow, &WorkoutRow::openEditWindow, this, &ClimbingApp::openEditWindow);
+    QObject::connect(newRow, &WorkoutRow::deleteRow, this, &ClimbingApp::deleteRowAtIndex);
 
     boxVLayout->addWidget(newRow);
 
@@ -269,16 +276,7 @@ void ClimbingApp::on_actionAdd_Row_triggered()
 
 void ClimbingApp::on_actionDelete_Row_triggered()
 {
-    if(listOfWorkoutRows.empty()) {
-        qDebug() << "List is empty";
-        return;
-    }
-
-    WorkoutRow* temp = listOfWorkoutRows[listOfWorkoutRows.size() - 1];
-    listOfWorkoutRows.pop_back();
-    delete temp;
-    temp = nullptr;
-    qDebug() << "Delete row";
+    deleteRowAtIndex(listOfWorkoutRows.size() - 1);
 }
 
 
@@ -289,6 +287,30 @@ bool ClimbingApp::isInt(QString str) {
         }
     }
     return true;
+}
+
+void ClimbingApp::openEditWindow(int index) {
+    qDebug() << "Opening edit window for: " + QString::number(index);
+}
+
+void ClimbingApp::deleteRowAtIndex(int index) {
+    if(listOfWorkoutRows.empty()) {
+        qDebug() << "List is empty";
+        return;
+    }
+
+    WorkoutRow* temp = listOfWorkoutRows[index];
+    listOfWorkoutRows.erase(listOfWorkoutRows.begin() + index);
+    delete temp;
+    temp = nullptr;
+
+    for(int i = index; i < listOfWorkoutRows.size(); ++i) {
+        listOfWorkoutRows[i]->setIndex(i);
+    }
+
+    workoutList.erase(workoutList.begin() + index);
+
+    qDebug() << "Delete row";
 }
 
 // cd Onedrive/Documents/Qt/Projects/ClimbingApp

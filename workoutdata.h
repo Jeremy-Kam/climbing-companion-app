@@ -36,6 +36,8 @@ public:
 
     QString toString();
 
+    void openEditWindow();
+
 private:
     // Use the most recent entry to display, but it stores all past edits.
     QMap<QDateTime, RowData> workoutHistory;
