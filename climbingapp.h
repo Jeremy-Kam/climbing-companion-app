@@ -49,6 +49,9 @@ public:
 
     bool isInt(QString str);
 
+    void createCharts();
+    void updateCharts();
+
 private slots:
     void on_actionSave_triggered();
 
@@ -73,6 +76,8 @@ private:
     std::vector<WorkoutData> workoutList;
 
     std::vector<WorkoutRow*> listOfWorkoutRows;
+
+    std::vector<QChartView*> listOfChartViews;
 
     // The vertical layout that stores the box, and more
     QVBoxLayout* mainVLayout;

@@ -101,77 +101,7 @@ ClimbingApp::ClimbingApp(QWidget *parent)
 
         mainVLayout->addWidget(scrollArea);
 
-        for(int i = 0; i < workoutList.size(); ++i) {
-            // We currently have no way of referencing the series
-            QLineSeries *lseries = new QLineSeries();
-
-            QMap<QDateTime, RowData> tempWorkoutHistory = workoutList[i].getWorkoutHistory();
-
-            int minValue = std::numeric_limits<int>::max();
-            int maxValue = -1;
-
-            // Data point set to today's date on the graph so it doesn't cut off at the last time it was changed
-            int latestValue;
-
-            // TODO: Set manual axis so user knows when it was updated
-            for(auto x: tempWorkoutHistory.toStdMap()) {
-                latestValue = x.second.getValue();
-                lseries->append(x.first.toMSecsSinceEpoch(), latestValue);
-                minValue = std::min(minValue, latestValue);
-                maxValue = std::max(maxValue, latestValue);
-            }
-
-            lseries->append(QDateTime::currentMSecsSinceEpoch(), latestValue);
-
-            QChart *chart = new QChart();
-            chart->legend()->hide();
-            chart->addSeries(lseries);
-            // chart->createDefaultAxes();
-
-            // Customize the title font
-            QFont font;
-            font.setPixelSize(18);
-            chart->setTitleFont(font);
-            chart->setTitleBrush(QBrush(Qt::black));
-            chart->setTitle(workoutList[i].getLatestRowData().getDescription());
-
-            // Change the line color and weight
-            QPen pen((QRgb(graphColors[rand() % graphColors.size()])));
-            pen.setWidth(3);
-            lseries->setPen(pen);
-
-            QList tempVertical = chart->axes(Qt::Vertical);
-
-            // tempHorizontal.back()->setRange(-35, 135);
-
-            QDateTimeAxis* axisX = new QDateTimeAxis();
-            axisX->setTickCount(10);
-            axisX->setFormat("dd MMM yyyy");
-            axisX->setTitleText("Date");
-            chart->addAxis(axisX, Qt::AlignBottom);
-            lseries->attachAxis(axisX);
-
-            // TODO, distinguish between reps and weight, and update axis title accordingly
-            QValueAxis* axisY = new QValueAxis();
-            axisY->setLabelFormat("%i");
-            axisY->setTitleText("Reps/Weight [" + workoutList[i].getLatestRowData().getUnit() + "]");
-            axisY->setRange(std::max(minValue - 2, 0), maxValue + 2);
-            chart->addAxis(axisY, Qt::AlignLeft);
-            lseries->attachAxis(axisY);
-
-
-            chart->setAnimationOptions(QChart::AllAnimations);
-
-            // Used to display the chart
-            QChartView *chartView = new QChartView(chart);
-            chartView->setRenderHint(QPainter::Antialiasing);
-
-            chartView->setFixedHeight(500);
-
-            graphVLayout->addWidget(chartView);
-        }
-
-
+        createCharts();
 
     }
 }
@@ -242,6 +172,8 @@ void ClimbingApp::on_actionSave_triggered()
         workoutList[i].insertToWorkoutHistory(QDateTime::currentDateTime(), tempRowData);
     }
 
+    updateCharts();
+
     // printData();
 
 }
@@ -304,13 +236,106 @@ void ClimbingApp::deleteRowAtIndex(int index) {
     delete temp;
     temp = nullptr;
 
+    QChartView* tempCV = listOfChartViews[index];
+    listOfChartViews.erase(listOfChartViews.begin() + index);
+    delete tempCV;
+    tempCV = nullptr;
+
     for(int i = index; i < listOfWorkoutRows.size(); ++i) {
         listOfWorkoutRows[i]->setIndex(i);
     }
 
     workoutList.erase(workoutList.begin() + index);
 
+    updateCharts();
+
     qDebug() << "Delete row";
+}
+
+void ClimbingApp::createCharts() {
+    for(int i = 0; i < workoutList.size(); ++i) {
+        // We currently have no way of referencing the series
+        QLineSeries *lseries = new QLineSeries();
+
+        QMap<QDateTime, RowData> tempWorkoutHistory = workoutList[i].getWorkoutHistory();
+
+        int minValue = std::numeric_limits<int>::max();
+        int maxValue = -1;
+
+        // Data point set to today's date on the graph so it doesn't cut off at the last time it was changed
+        int latestValue;
+
+        // TODO: Set manual axis so user knows when it was updated
+        for(auto x: tempWorkoutHistory.toStdMap()) {
+            latestValue = x.second.getValue();
+            lseries->append(x.first.toMSecsSinceEpoch(), latestValue);
+            minValue = std::min(minValue, latestValue);
+            maxValue = std::max(maxValue, latestValue);
+        }
+
+        lseries->append(QDateTime::currentMSecsSinceEpoch(), latestValue);
+
+        QChart *chart = new QChart();
+        chart->legend()->hide();
+        chart->addSeries(lseries);
+        // chart->createDefaultAxes();
+
+        // Customize the title font
+        QFont font;
+        font.setPixelSize(18);
+        chart->setTitleFont(font);
+        chart->setTitleBrush(QBrush(Qt::black));
+        chart->setTitle(workoutList[i].getLatestRowData().getDescription());
+
+        // Change the line color and weight
+        QPen pen((QRgb(graphColors[rand() % graphColors.size()])));
+        pen.setWidth(3);
+        lseries->setPen(pen);
+
+        QList tempVertical = chart->axes(Qt::Vertical);
+
+        // tempHorizontal.back()->setRange(-35, 135);
+
+        QDateTimeAxis* axisX = new QDateTimeAxis();
+        axisX->setTickCount(10);
+        axisX->setFormat("dd MMM yyyy");
+        axisX->setTitleText("Date");
+        chart->addAxis(axisX, Qt::AlignBottom);
+        lseries->attachAxis(axisX);
+
+        // TODO, distinguish between reps and weight, and update axis title accordingly
+        QValueAxis* axisY = new QValueAxis();
+        axisY->setLabelFormat("%i");
+        axisY->setTitleText("Reps/Weight [" + workoutList[i].getLatestRowData().getUnit() + "]");
+        axisY->setRange(std::max(minValue - 2, 0), maxValue + 2);
+        chart->addAxis(axisY, Qt::AlignLeft);
+        lseries->attachAxis(axisY);
+
+
+        chart->setAnimationOptions(QChart::AllAnimations);
+
+        // Used to display the chart
+        QChartView *chartView = new QChartView(chart);
+        chartView->setRenderHint(QPainter::Antialiasing);
+
+        chartView->setFixedHeight(500);
+
+        graphVLayout->addWidget(chartView);
+
+        listOfChartViews.push_back(chartView);
+    }
+}
+
+void ClimbingApp::updateCharts() {
+    while(!listOfChartViews.empty()) {
+        QChartView* tempCV = listOfChartViews[0];
+        listOfChartViews.erase(listOfChartViews.begin());
+        delete tempCV;
+        tempCV = nullptr;
+    }
+
+    createCharts();
+
 }
 
 // cd Onedrive/Documents/Qt/Projects/ClimbingApp
