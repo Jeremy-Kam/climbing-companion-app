@@ -28,6 +28,7 @@
 #include <QSpacerItem>
 
 #include "workoutrow.h"
+#include "editrow.h"
 
 QT_BEGIN_NAMESPACE
 namespace Ui { class ClimbingApp; }

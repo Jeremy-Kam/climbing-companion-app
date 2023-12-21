@@ -223,6 +223,27 @@ bool ClimbingApp::isInt(QString str) {
 
 void ClimbingApp::openEditWindow(int index) {
     qDebug() << "Opening edit window for: " + QString::number(index);
+
+    QWidget* window = new QWidget();
+    window->resize(500, 500);
+
+    QVBoxLayout* editWindowMainVLayout = new QVBoxLayout(window);
+
+    QVBoxLayout* editWindowVLayout = new QVBoxLayout();
+
+    QWidget* editWindowscrollAreaContent = new QWidget();
+    editWindowscrollAreaContent->setLayout(editWindowVLayout);
+    QScrollArea* scrollArea = new QScrollArea();
+    scrollArea->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
+    scrollArea->setVerticalScrollBarPolicy(Qt::ScrollBarAsNeeded);
+    scrollArea->setWidgetResizable(true);
+    scrollArea->setWidget(editWindowscrollAreaContent);
+
+    editWindowMainVLayout->addWidget(scrollArea);
+
+    editWindowVLayout->addWidget(new EditRow());
+
+    window->show();
 }
 
 void ClimbingApp::deleteRowAtIndex(int index) {
