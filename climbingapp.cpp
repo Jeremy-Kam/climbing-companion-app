@@ -241,6 +241,32 @@ void ClimbingApp::openEditWindow(int index) {
 
     editWindowMainVLayout->addWidget(scrollArea);
 
+    QWidget* editWindowColumnNameWidget = new QWidget(scrollArea);
+    editWindowVLayout->addWidget(editWindowColumnNameWidget);
+
+    QHBoxLayout *editWindowColumnNameLayout = new QHBoxLayout(editWindowColumnNameWidget);
+
+    QLabel* editWindowDescription = new QLabel("Description", editWindowColumnNameWidget);
+    editWindowDescription->setFixedHeight(labelHeight);
+    editWindowColumnNameLayout->addWidget(editWindowDescription);
+
+    QLabel* editWindowReps = new QLabel("Reps/Weight", editWindowColumnNameWidget);
+    editWindowReps->setFixedHeight(labelHeight);
+    editWindowReps->setFixedWidth(repsUnitsWidth);
+    editWindowColumnNameLayout->addWidget(editWindowReps);
+
+    QLabel* editWindowUnits = new QLabel("Units", editWindowColumnNameWidget);
+    editWindowUnits->setFixedHeight(labelHeight);
+    editWindowUnits->setFixedWidth(repsUnitsWidth);
+    editWindowColumnNameLayout->addWidget(editWindowUnits);
+
+    QLabel* editWindowDateEdit = new QLabel();
+    editWindowDateEdit->setFixedHeight(labelHeight);
+    editWindowDateEdit->setFixedWidth(labelHeight);
+    editWindowColumnNameLayout->addWidget(editWindowDateEdit);
+
+
+
     editWindowVLayout->addWidget(new EditRow());
 
     window->show();

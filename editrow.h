@@ -13,6 +13,7 @@
 #include <QLineEdit>
 #include <QGroupBox>
 #include <QPushButton>
+#include <QDateTimeEdit>
 
 class EditRow : public QWidget
 {
@@ -34,6 +35,7 @@ private:
     QLineEdit* description;
     QLineEdit* reps;
     QLineEdit* units;
+    QDateTimeEdit* editDate;
 
     int rowHeight = 30;
     int repsUnitLabelWidth = 100;
