@@ -17,6 +17,8 @@ EditRow::EditRow(QWidget *parent)
     units->setFixedWidth(repsUnitLabelWidth);
 
     editDate = new QDateTimeEdit();
+    editDate->setFixedHeight(rowHeight);
+    editDate->setFixedWidth(dateEditWidth);
 
     workoutElementLayout->addWidget(description);
     workoutElementLayout->addWidget(reps);
@@ -24,6 +26,10 @@ EditRow::EditRow(QWidget *parent)
     workoutElementLayout->addWidget(editDate);
 
     this->setLayout(workoutElementLayout);
+}
+
+EditRow::~EditRow() {
+
 }
 
 QLineEdit* EditRow::getDescription() {
@@ -36,6 +42,10 @@ QLineEdit* EditRow::getReps() {
 
 QLineEdit* EditRow::getUnits() {
     return units;
+}
+
+QDateTimeEdit* EditRow::getDate() {
+    return editDate;
 }
 
 void EditRow::setDescription(QString description) {

@@ -10,6 +10,7 @@ CONFIG += c++17
 
 SOURCES += \
     editrow.cpp \
+    editwindow.cpp \
     main.cpp \
     climbingapp.cpp \
     rowdata.cpp \
@@ -19,6 +20,7 @@ SOURCES += \
 HEADERS += \
     climbingapp.h \
     editrow.h \
+    editwindow.h \
     rowdata.h \
     workoutdata.h \
     workoutrow.h

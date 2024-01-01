@@ -224,52 +224,9 @@ bool ClimbingApp::isInt(QString str) {
 void ClimbingApp::openEditWindow(int index) {
     qDebug() << "Opening edit window for: " + QString::number(index);
 
-    QWidget* window = new QWidget();
-    window->resize(500, 500);
-
-    QVBoxLayout* editWindowMainVLayout = new QVBoxLayout(window);
-
-    QVBoxLayout* editWindowVLayout = new QVBoxLayout();
-
-    QWidget* editWindowscrollAreaContent = new QWidget();
-    editWindowscrollAreaContent->setLayout(editWindowVLayout);
-    QScrollArea* scrollArea = new QScrollArea();
-    scrollArea->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
-    scrollArea->setVerticalScrollBarPolicy(Qt::ScrollBarAsNeeded);
-    scrollArea->setWidgetResizable(true);
-    scrollArea->setWidget(editWindowscrollAreaContent);
-
-    editWindowMainVLayout->addWidget(scrollArea);
-
-    QWidget* editWindowColumnNameWidget = new QWidget(scrollArea);
-    editWindowVLayout->addWidget(editWindowColumnNameWidget);
-
-    QHBoxLayout *editWindowColumnNameLayout = new QHBoxLayout(editWindowColumnNameWidget);
-
-    QLabel* editWindowDescription = new QLabel("Description", editWindowColumnNameWidget);
-    editWindowDescription->setFixedHeight(labelHeight);
-    editWindowColumnNameLayout->addWidget(editWindowDescription);
-
-    QLabel* editWindowReps = new QLabel("Reps/Weight", editWindowColumnNameWidget);
-    editWindowReps->setFixedHeight(labelHeight);
-    editWindowReps->setFixedWidth(repsUnitsWidth);
-    editWindowColumnNameLayout->addWidget(editWindowReps);
-
-    QLabel* editWindowUnits = new QLabel("Units", editWindowColumnNameWidget);
-    editWindowUnits->setFixedHeight(labelHeight);
-    editWindowUnits->setFixedWidth(repsUnitsWidth);
-    editWindowColumnNameLayout->addWidget(editWindowUnits);
-
-    QLabel* editWindowDateEdit = new QLabel();
-    editWindowDateEdit->setFixedHeight(labelHeight);
-    editWindowDateEdit->setFixedWidth(labelHeight);
-    editWindowColumnNameLayout->addWidget(editWindowDateEdit);
+    EditWindow* eWindow = new EditWindow(nullptr, workoutList[index], index);
 
 
-
-    editWindowVLayout->addWidget(new EditRow());
-
-    window->show();
 }
 
 void ClimbingApp::deleteRowAtIndex(int index) {

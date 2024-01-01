@@ -20,10 +20,12 @@ class EditRow : public QWidget
     Q_OBJECT
 public:
     explicit EditRow(QWidget *parent = nullptr);
+    ~EditRow();
 
     QLineEdit* getDescription();
     QLineEdit* getReps();
     QLineEdit* getUnits();
+    QDateTimeEdit* getDate();
 
     void setDescription(QString description);
     void setReps(int reps);
@@ -39,6 +41,7 @@ private:
 
     int rowHeight = 30;
     int repsUnitLabelWidth = 100;
+    int dateEditWidth = 150;
 };
 
 #endif // EDITROW_H
