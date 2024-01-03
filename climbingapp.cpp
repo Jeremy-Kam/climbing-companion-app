@@ -224,9 +224,9 @@ bool ClimbingApp::isInt(QString str) {
 void ClimbingApp::openEditWindow(int index) {
     qDebug() << "Opening edit window for: " + QString::number(index);
 
-    EditWindow* eWindow = new EditWindow(nullptr, workoutList[index], index);
+    currentEditWindow = new EditWindow(nullptr, workoutList[index], index);
 
-
+    QObject::connect(currentEditWindow, &EditWindow::savedDataForRow, this, &ClimbingApp::updateRowAtIndex);
 }
 
 void ClimbingApp::deleteRowAtIndex(int index) {
@@ -340,6 +340,10 @@ void ClimbingApp::updateCharts() {
 
     createCharts();
 
+}
+
+void ClimbingApp::updateRowAtIndex(int index) {
+    qDebug() << "Update row: " << QString::number(index);
 }
 
 // cd Onedrive/Documents/Qt/Projects/ClimbingApp

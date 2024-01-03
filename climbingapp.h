@@ -69,6 +69,8 @@ private slots:
 
     void deleteRowAtIndex(int index);
 
+    void updateRowAtIndex(int index);
+
 private:
     Ui::ClimbingApp *ui;
 
@@ -94,6 +96,8 @@ private:
     QVBoxLayout* graphVLayout;
 
     std::vector<unsigned int> graphColors = {0x076CE8, 0x00E6D2, 0xBF6000, 0xFF6C23, 0x334A66};
+
+    EditWindow* currentEditWindow;
 
     int labelHeight = 30;
     int repsUnitsWidth = 100;

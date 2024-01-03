@@ -1,29 +1,35 @@
 #include "editrow.h"
 
-EditRow::EditRow(QWidget *parent)
+EditRow::EditRow(QWidget *parent, QString description, int reps, QString units, QDateTime date)
     : QWidget{parent}
 {
     QHBoxLayout *workoutElementLayout = new QHBoxLayout(this);
 
-    description = new QLineEdit();
-    description->setFixedHeight(rowHeight);
+    this->description = new QLineEdit();
+    this->description->setFixedHeight(rowHeight);
+    this->description->setText(description);
 
-    reps = new QLineEdit();
-    reps->setFixedHeight(rowHeight);
-    reps->setFixedWidth(repsUnitLabelWidth);
+    this->reps = new QLineEdit();
+    this->reps->setFixedHeight(rowHeight);
+    this->reps->setFixedWidth(repsUnitLabelWidth);
+    this->reps->setText(QString::number(reps));
 
-    units = new QLineEdit();
-    units->setFixedHeight(rowHeight);
-    units->setFixedWidth(repsUnitLabelWidth);
+    this->units = new QLineEdit();
+    this->units->setFixedHeight(rowHeight);
+    this->units->setFixedWidth(repsUnitLabelWidth);
+    this->units->setText(units);
 
-    editDate = new QDateTimeEdit();
-    editDate->setFixedHeight(rowHeight);
-    editDate->setFixedWidth(dateEditWidth);
+    this->editDate = new QDateTimeEdit();
+    this->editDate->setFixedHeight(rowHeight);
+    this->editDate->setFixedWidth(dateWidth);
+    this->editDate->setDateTime(date);
 
-    workoutElementLayout->addWidget(description);
-    workoutElementLayout->addWidget(reps);
-    workoutElementLayout->addWidget(units);
-    workoutElementLayout->addWidget(editDate);
+    this->editDate->setCalendarPopup(true);
+
+    workoutElementLayout->addWidget(this->description);
+    workoutElementLayout->addWidget(this->reps);
+    workoutElementLayout->addWidget(this->units);
+    workoutElementLayout->addWidget(this->editDate);
 
     this->setLayout(workoutElementLayout);
 }
@@ -58,4 +64,8 @@ void EditRow::setReps(int reps) {
 
 void EditRow::setUnits(QString units) {
     this->units->setText(units);
+}
+
+void EditRow::setDate(QDateTime date) {
+    editDate->setDateTime(date);
 }

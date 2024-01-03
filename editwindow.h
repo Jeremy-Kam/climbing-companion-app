@@ -25,6 +25,7 @@
 #include <QtCharts/QCategoryAxis>
 #include <QScrollArea>
 #include <QSpacerItem>
+#include <QBoxLayout>
 
 #include "editrow.h"
 #include "rowdata.h"
@@ -39,23 +40,33 @@ public:
 
     ~EditWindow();
 
-    //QMap<QDateTime, RowData> getNewData();
+
+    // Gets the new data that the user added
+    QMap<QDateTime, RowData> getNewData();
+
+    bool isInt(QString str);
 
 signals:
-    //void dataSavedForRow(int index);
+    void savedDataForRow(int index);
 
 private slots:
-    //void saveData();
+    void addButtonPressed();
+    void deleteButtonPressed();
+    void saveButtonPressed();
 
 private:
     std::vector<EditRow*> editRows;
     int index;
 
-    QPushButton* saveButton;
-
     int labelHeight = 30;
     int repsUnitsWidth = 100;
     int dateEditWidth = 150;
+
+    std::vector<EditRow*> listOfEditRows;
+
+    QHBoxLayout* buttonLayout;
+
+    QVBoxLayout* editWindowVLayout;
 
 };
 
