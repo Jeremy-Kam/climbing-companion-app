@@ -23,6 +23,7 @@ EditRow::EditRow(QWidget *parent, QString description, int reps, QString units, 
     this->editDate->setFixedHeight(rowHeight);
     this->editDate->setFixedWidth(dateWidth);
     this->editDate->setDateTime(date);
+    this->editDate->setMaximumDateTime(QDateTime::currentDateTime());
 
     this->editDate->setCalendarPopup(true);
 

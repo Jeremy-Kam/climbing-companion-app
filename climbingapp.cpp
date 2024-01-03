@@ -350,6 +350,10 @@ void ClimbingApp::updateCharts() {
 
 void ClimbingApp::updateRowAtIndex(int index) {
     qDebug() << "Update row: " << QString::number(index);
+
+    workoutList[index].setWorkoutHistory(currentEditWindow->getNewData());
+
+    updateCharts();
 }
 
 void ClimbingApp::clearEditWindow() {
