@@ -71,6 +71,8 @@ private slots:
 
     void updateRowAtIndex(int index);
 
+    void clearEditWindow();
+
 private:
     Ui::ClimbingApp *ui;
 
@@ -97,10 +99,12 @@ private:
 
     std::vector<unsigned int> graphColors = {0x076CE8, 0x00E6D2, 0xBF6000, 0xFF6C23, 0x334A66};
 
-    EditWindow* currentEditWindow;
+    EditWindow* currentEditWindow = nullptr;
 
     int labelHeight = 30;
     int repsUnitsWidth = 100;
 
 };
 #endif // CLIMBINGAPP_H
+
+// cd Onedrive/Documents/Qt/Projects/ClimbingApp

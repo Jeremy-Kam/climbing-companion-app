@@ -80,6 +80,8 @@ EditWindow::~EditWindow() {
     for(auto x: temp.toStdMap()) {
         qDebug() << x.first << ": " << x.second.getUniqueID() << " " << x.second.getDescription() << " " << x.second.getValue() << " " << x.second.getUnit();
     }
+
+    emit closedWindow();
 }
 
 QMap<QDateTime, RowData> EditWindow::getNewData() {

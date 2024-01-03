@@ -48,6 +48,7 @@ public:
 
 signals:
     void savedDataForRow(int index);
+    void closedWindow();
 
 private slots:
     void addButtonPressed();

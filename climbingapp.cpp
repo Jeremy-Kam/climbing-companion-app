@@ -222,11 +222,17 @@ bool ClimbingApp::isInt(QString str) {
 }
 
 void ClimbingApp::openEditWindow(int index) {
+    if(currentEditWindow != nullptr) {
+        qDebug() << "A window is already open";
+        return;
+    }
+
     qDebug() << "Opening edit window for: " + QString::number(index);
 
     currentEditWindow = new EditWindow(nullptr, workoutList[index], index);
 
     QObject::connect(currentEditWindow, &EditWindow::savedDataForRow, this, &ClimbingApp::updateRowAtIndex);
+    QObject::connect(currentEditWindow, &EditWindow::closedWindow, this, &ClimbingApp::clearEditWindow);
 }
 
 void ClimbingApp::deleteRowAtIndex(int index) {
@@ -344,6 +350,11 @@ void ClimbingApp::updateCharts() {
 
 void ClimbingApp::updateRowAtIndex(int index) {
     qDebug() << "Update row: " << QString::number(index);
+}
+
+void ClimbingApp::clearEditWindow() {
+    currentEditWindow = nullptr;
+    qDebug() << "Current edit window cleared";
 }
 
 // cd Onedrive/Documents/Qt/Projects/ClimbingApp
