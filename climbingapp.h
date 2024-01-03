@@ -53,6 +53,7 @@ public:
 
     void createCharts();
     void updateCharts();
+    void updateTextBoxes();
 
 private slots:
     void on_actionSave_triggered();

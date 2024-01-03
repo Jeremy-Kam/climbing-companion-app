@@ -233,6 +233,8 @@ void ClimbingApp::openEditWindow(int index) {
 
     QObject::connect(currentEditWindow, &EditWindow::savedDataForRow, this, &ClimbingApp::updateRowAtIndex);
     QObject::connect(currentEditWindow, &EditWindow::closedWindow, this, &ClimbingApp::clearEditWindow);
+
+    this->hide();
 }
 
 void ClimbingApp::deleteRowAtIndex(int index) {
@@ -348,17 +350,31 @@ void ClimbingApp::updateCharts() {
 
 }
 
+void ClimbingApp::updateTextBoxes() {
+    for(int i = 0; i < workoutList.size(); ++i) {
+        listOfWorkoutRows[i]->setDescription(workoutList[i].getLatestRowData().getDescription());
+        listOfWorkoutRows[i]->setReps(workoutList[i].getLatestRowData().getValue());
+        listOfWorkoutRows[i]->setUnits(workoutList[i].getLatestRowData().getUnit());
+    }
+
+    qDebug() << "Updated text boxes";
+}
+
+
 void ClimbingApp::updateRowAtIndex(int index) {
     qDebug() << "Update row: " << QString::number(index);
 
     workoutList[index].setWorkoutHistory(currentEditWindow->getNewData());
 
     updateCharts();
+    updateTextBoxes();
 }
 
 void ClimbingApp::clearEditWindow() {
     currentEditWindow = nullptr;
     qDebug() << "Current edit window cleared";
+
+    this->show();
 }
 
 // cd Onedrive/Documents/Qt/Projects/ClimbingApp
